@@ -18,6 +18,7 @@ CREATE TABLE posts (
     titulo VARCHAR(255) NOT NULL,
     contenido TEXT,
     estado ENUM('Publicado', 'Borrador') NOT NULL DEFAULT 'Borrador',
+    imagen varchar(150),
     user_id INT NOT NULL,
     category_id INT NOT NULL,
     FOREIGN KEY (user_id) REFERENCES usuarios(id) ON DELETE CASCADE,
