@@ -1,6 +1,8 @@
 <?php
-
+session_start();
 use App\Bd\Post;
+use App\Utils\Datos;
+use Faker\Provider\bn_BD\Utils;
 
 require __DIR__ . "/../vendor/autoload.php";
 $posts = Post::readAll();
@@ -20,8 +22,10 @@ $posts = Post::readAll();
     <title>Document</title>
 </head>
 
-<body class="p-8 bg-blue-200">
-    <h3 class="text-center text-xl font-bold mb-2">POSTS</h3>
+<body class="bg-blue-200">
+    <?php
+        Datos::pintarNav("Inicio");
+    ?>
     <!-- Grid contenedor: 3 columnas responsivas -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-6">
         <?php foreach($posts as $item): ?> 

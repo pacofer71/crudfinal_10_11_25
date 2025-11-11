@@ -39,6 +39,19 @@ class Usuario extends Conexion{
         }
         return $users;
     }
+    public static function loginValido(string $email, string $password): bool{
+        $q="select password from usuarios where email=:e";
+        $stmt=self::executeQuery($q,[':e'=>$email]);
+        $datos=$stmt->fetchAll(PDO::FETCH_ASSOC);
+        if(count($datos)){
+            $pass=$datos[0]['password'];
+            //$pass=$datos[0]->password; si hubiesemos hecho el FETCH_OBJ
+            return password_verify($password, $pass);
+        }
+        return false;
+
+
+    }
 
 
     public static function crearUsuarios(int $cant){
