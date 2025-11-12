@@ -1,3 +1,26 @@
+# ====================
+# Carpetas de entorno y sistema
+# ====================
+# Dependencias de PHP
 /vendor/
+
+# Configuraciones del IDE (JetBrains)
+.idea/
+
+# Variables de entorno (contienen datos sensibles)
 .env
+
+# ====================
+# Archivos de dependencias
+# ====================
+# Bloqueo de paquetes de Composer (se regenera)
 composer.lock
+
+# ====================
+# Archivos multimedia (imágenes)
+# ====================
+# Ignorar TODAS las imágenes en cualquier carpeta
+**/*.{jpg,jpeg,png,gif,svg}
+
+# Excepción: mantener este archivo específico
+!**/noimage.jpg
