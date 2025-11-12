@@ -33,6 +33,11 @@ class Datos
                 <span>Logout</span>
             </a>
             TXT;
+            $enlaceAdmin=<<<TXT
+                <a href='admin.php' class="ml-4 font-semibold text-lg">
+                    <i class="fas fa-gears mr-1"></i> Administrar Posts
+                </a>
+            TXT;
         } else {
             $cadena = <<<TXT
              <div class="relative">
@@ -43,6 +48,7 @@ class Datos
               </a>
              </div>
             TXT;
+            $enlaceAdmin="";
         }
         echo <<< TXT
          <nav class="bg-gray-800 text-white px-6 py-3 flex items-center justify-between shadow-lg">
@@ -50,6 +56,7 @@ class Datos
         <div class="flex items-center space-x-2">
             <i class="fas fa-user-shield text-blue-400 text-xl"></i>
             <span class="font-semibold text-lg">$titulo</span>
+            $enlaceAdmin
         </div>
 
         <!-- Sección derecha: email y logout -->

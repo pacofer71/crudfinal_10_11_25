@@ -50,6 +50,13 @@ class Post extends Conexion
         return $stmt->fetchAll(PDO::FETCH_OBJ);    
     }
 
+    public static function getPostsByEmail(string $email): array{
+        $q="select posts.*, email, nombre, color from posts, categorias, usuarios
+         where usuarios.id=user_id AND categorias.id=category_id AND email=:e";
+        $stmt=self::executeQuery($q, [':e'=>$email]);
+        return $stmt->fetchAll(PDO::FETCH_OBJ);
+    }
+
     public static function crearPosts(int $cant){
         $faker = \Faker\Factory::create('es_ES');
         $categoriasId=Categoria::getIdsCategorias();
