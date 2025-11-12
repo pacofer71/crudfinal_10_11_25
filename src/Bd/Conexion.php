@@ -21,7 +21,7 @@ class Conexion{
         $port=$_ENV['PUERTO'];
         $pass=$_ENV['PASSWORD'];
 
-        $dsn="mysql:host=$host;dbname=$db;charset=utf8mb4";
+        $dsn="mysql:host=$host;port=$port;dbname=$db;charset=utf8mb4";
         $options=[
             PDO::ATTR_PERSISTENT=>true,
             PDO::ATTR_ERRMODE=>PDO::ERRMODE_EXCEPTION,
