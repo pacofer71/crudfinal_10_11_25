@@ -22,6 +22,11 @@ class Categoria extends Conexion
             throw new PDOException("Error en la consulta: " . $ex->getMessage());
         }
     }
+    public static function read(): array{
+        $q="select * from categorias order by nombre";
+        $stmt=self::executeQuery($q);
+        return $stmt->fetchAll(PDO::FETCH_OBJ);
+    }
 
     public function create()
     {

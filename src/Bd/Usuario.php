@@ -29,15 +29,16 @@ class Usuario extends Conexion{
         $param=($id==null) ? [] :[':i'=>$id];
         self::executeQuery($q, $param);
     } 
-    public static function getIdsUsuarios():array{
-        $q="select id from usuarios";
-        $stmt=self::executeQuery($q);
+    public static function getIdsUsuarios(?string $email=null):array{
+        $q=($email==null) ? "select id from usuarios" : "select id from usuarios where email=:e";
+        $parametros=($email==null) ? [] : [':e'=>$email];
+        $stmt=self::executeQuery($q, $parametros);
         $datos=$stmt->fetchAll(PDO::FETCH_OBJ);
         $users=[];
         foreach($datos as $item){
             $users[]=$item->id;
         }
-        return $users;
+        return $users; //[1,2,3,4,5,6], [3]
     }
     public static function loginValido(string $email, string $password): bool{
         $q="select password from usuarios where email=:e";

@@ -20,7 +20,7 @@ composer.lock
 # Archivos multimedia (imágenes)
 # ====================
 # Ignorar TODAS las imágenes en cualquier carpeta
-**/*.{jpg,jpeg,png,gif,svg}
+imagenes/
 
 # Excepción: mantener este archivo específico
 !**/noimage.jpg

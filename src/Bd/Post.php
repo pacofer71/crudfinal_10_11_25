@@ -26,56 +26,82 @@ class Post extends Conexion
             throw new PDOException("Error en la consulta: " . $ex->getMessage());
         }
     }
-    public function create(){
-        $q="insert into posts(titulo, contenido, estado, imagen, user_id, category_id) values(:t, :c, :e, :im, :ui, :ci)";
+    public function create()
+    {
+        $q = "insert into posts(titulo, contenido, estado, imagen, user_id, category_id) values(:t, :c, :e, :im, :ui, :ci)";
         self::executeQuery($q, [
-            ':t'=>$this->titulo,
-            ':c'=>$this->contenido,
-            ':e'=>$this->estado,
-            ':im'=>$this->imagen,
-            ':ui'=>$this->user_id,
-            ':ci'=>$this->category_id,
-    
+            ':t' => $this->titulo,
+            ':c' => $this->contenido,
+            ':e' => $this->estado,
+            ':im' => $this->imagen,
+            ':ui' => $this->user_id,
+            ':ci' => $this->category_id,
+
         ]);
     }
-    public static function delete(?int $id=null){
-        $q=($id==null) ? "delete from posts" : "delete from posts where id=:i";
-        $param=($id==null) ? [] :[':i'=>$id];
+    public function update(int $id)
+    {
+        //el user_id en este caso no lo vamos a actualizar
+        $q = "update posts set titulo=:t, contenido=:c, estado=:e, imagen=:im, category_id=:ci where id=:i";
+        self::executeQuery($q, [
+            ':t' => $this->titulo,
+            ':c' => $this->contenido,
+            ':e' => $this->estado,
+            ':im' => $this->imagen,
+            ':ci' => $this->category_id,
+            ':i' => $id
+        ]);
+    }
+    public static function delete(?int $id = null)
+    {
+        $q = ($id == null) ? "delete from posts" : "delete from posts where id=:i";
+        $param = ($id == null) ? [] : [':i' => $id];
         self::executeQuery($q, $param);
     }
-    public static function readAll(): array{
-        $q="select posts.*, email, nombre, color from posts, categorias, usuarios where
-            usuarios.id=user_id AND categorias.id=category_id  AND estado='Publicado' order by posts.id desc"; 
-        $stmt=self::executeQuery($q);
-        return $stmt->fetchAll(PDO::FETCH_OBJ);    
-    }
-
-    public static function getPostsByEmail(string $email): array{
-        $q="select posts.*, email, nombre, color from posts, categorias, usuarios
-         where usuarios.id=user_id AND categorias.id=category_id AND email=:e";
-        $stmt=self::executeQuery($q, [':e'=>$email]);
+    public static function readAll(): array
+    {
+        $q = "select posts.*, email, nombre, color from posts, categorias, usuarios where
+            usuarios.id=user_id AND categorias.id=category_id  AND estado='Publicado' order by posts.id desc";
+        $stmt = self::executeQuery($q);
         return $stmt->fetchAll(PDO::FETCH_OBJ);
     }
 
-    public static function crearPosts(int $cant){
+
+    public static function getPostsByEmail(string $email): array
+    {
+        $q = "select posts.*, email, nombre, color from posts, categorias, usuarios
+         where usuarios.id=user_id AND categorias.id=category_id AND email=:e order by posts.id desc";
+        $stmt = self::executeQuery($q, [':e' => $email]);
+        return $stmt->fetchAll(PDO::FETCH_OBJ);
+    }
+    public static function getPostByIdPostAndEmail(string $email, int $idPost): array
+    {
+        $q = "select posts.* from posts, usuarios where posts.user_id=usuarios.id AND email=:e AND posts.id=:ip";
+        $stmt = self::executeQuery($q, [':e' => $email, ':ip' => $idPost]);
+        return $stmt->fetchAll(PDO::FETCH_OBJ); // [] [obj(id, titulo, contenido...)]
+    }
+
+
+    public static function crearPosts(int $cant)
+    {
         $faker = \Faker\Factory::create('es_ES');
-        $categoriasId=Categoria::getIdsCategorias();
-        $usuariosId=Usuario::getIdsUsuarios();
-        for($i=0; $i<$cant; $i++){
-            $titulo=$faker->sentence(4, true);
-            $contenido=$faker->text();
-            $estado=$faker->randomElement(['Publicado', 'Borrador']);
-            $imagen="/imagenes/noimage.jpg";
-            $user_id=$faker->randomElement($usuariosId);
-            $category_id=$faker->randomElement($categoriasId);
+        $categoriasId = Categoria::getIdsCategorias();
+        $usuariosId = Usuario::getIdsUsuarios();
+        for ($i = 0; $i < $cant; $i++) {
+            $titulo = $faker->sentence(4, true);
+            $contenido = $faker->text();
+            $estado = $faker->randomElement(['Publicado', 'Borrador']);
+            $imagen = "/imagenes/noimage.jpg";
+            $user_id = $faker->randomElement($usuariosId);
+            $category_id = $faker->randomElement($categoriasId);
             (new Post)
-            ->setTitulo($titulo)
-            ->setContenido($contenido)
-            ->setImagen($imagen)
-            ->setEstado($estado)
-            ->setCategoryId($category_id)
-            ->setUserId($user_id)
-            ->create();
+                ->setTitulo($titulo)
+                ->setContenido($contenido)
+                ->setImagen($imagen)
+                ->setEstado($estado)
+                ->setCategoryId($category_id)
+                ->setUserId($user_id)
+                ->create();
         }
     }
 
@@ -148,4 +174,4 @@ class Post extends Conexion
 
         return $this;
     }
-    }
+}

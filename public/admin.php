@@ -34,7 +34,12 @@ $misPosts = Post::getPostsByEmail($email);
     <h3 class="text-center text-xl font-bold mb-2">Mis Posts</h3>
 
 
-    <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+    <div class="relative mx-auto w-3/4 shadow-md sm:rounded-lg">
+        <div class="flex flex-row-reverse my-1">
+            <a href="nuevo.php" class="p-2 rounded-lg bg-green-500 hover:bg-green-700 text-white font-bold">
+                <i class="fas fa-add mr-1"></i>NUEVO
+            </a>
+        </div>
         <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
             <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                 <tr>
@@ -83,7 +88,15 @@ $misPosts = Post::getPostsByEmail($email);
 
                         </td>
                         <td class="px-6 py-4">
-                            <a href="#" class="font-medium text-red-600 dark:text-red-500 hover:underline">Remove</a>
+                            <form method="POST" action="delete.php">
+                                <input type="hidden" name="idPost" value="<?= $item->id ?>" />
+                                <a href="update.php?id=<?= $item->id ?>">
+                                    <i class="fas fa-edit text-blue-500 hover:text-xl mr-2"></i>
+                                </a>
+                                <button type='submit'>
+                                    <i class="fas fa-trash text-red-500 hover:text-xl"></i>
+                                </button>
+                            </form>
                         </td>
 
                     </tr>
