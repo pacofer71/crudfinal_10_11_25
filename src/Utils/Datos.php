@@ -33,7 +33,7 @@ class Datos
                 <span>Logout</span>
             </a>
             TXT;
-            $enlaceAdmin=<<<TXT
+            $enlaceAdmin = <<<TXT
                 <a href='admin.php' class="ml-4 font-semibold text-lg">
                     <i class="fas fa-gears mr-1"></i> Administrar Posts
                 </a>
@@ -48,15 +48,17 @@ class Datos
               </a>
              </div>
             TXT;
-            $enlaceAdmin="";
+            $enlaceAdmin = "";
         }
         echo <<< TXT
          <nav class="bg-gray-800 text-white px-6 py-3 flex items-center justify-between shadow-lg">
         <!-- Logo o título -->
         <div class="flex items-center space-x-2">
-            <i class="fas fa-user-shield text-blue-400 text-xl"></i>
+            <a href="index.php">
+            <i class="fas fa-home text-xl"></i>
             <span class="font-semibold text-lg">$titulo</span>
             $enlaceAdmin
+            </a>
         </div>
 
         <!-- Sección derecha: email y logout -->

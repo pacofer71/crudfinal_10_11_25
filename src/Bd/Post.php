@@ -39,18 +39,20 @@ class Post extends Conexion
 
         ]);
     }
-    public function update(int $id)
+    public function update(int $id, ?string $estado = null)
     {
         //el user_id en este caso no lo vamos a actualizar
-        $q = "update posts set titulo=:t, contenido=:c, estado=:e, imagen=:im, category_id=:ci where id=:i";
-        self::executeQuery($q, [
+        $q = ($estado == null) ? "update posts set titulo=:t, contenido=:c, estado=:e, imagen=:im, category_id=:ci where id=:i"
+            : "update posts set estado=:e where id=:i";
+        $parametros = ($estado == null) ?  [
             ':t' => $this->titulo,
             ':c' => $this->contenido,
             ':e' => $this->estado,
             ':im' => $this->imagen,
             ':ci' => $this->category_id,
             ':i' => $id
-        ]);
+        ] : [':e' => $estado, ':i' => $id];
+        self::executeQuery($q, $parametros);
     }
     public static function delete(?int $id = null)
     {

@@ -10,6 +10,16 @@ if (!isset($_SESSION['email'])) {
     exit;
 }
 $email = $_SESSION['email'];
+
+if(isset($_POST['idPost'])){
+    $id=$_POST['idPost'];
+    $dato=Post::getPostByIdPostAndEmail($email, $id);
+    if(count($dato)){
+        $post=$dato[0];
+        $estado=($post->estado=='Publicado') ? "Borrador" : "Publicado";
+        (new Post)->update($id, $estado);
+    }
+}
 $misPosts = Post::getPostsByEmail($email);
 ?>
 <!DOCTYPE html>
@@ -82,9 +92,13 @@ $misPosts = Post::getPostsByEmail($email);
                                 style="background-color:<?= $item->color ?>"><?= $item->nombre ?></p>
                         </td>
                         <td class="px-6 py-4 italic">
-                            <div class="flex items-center">
-                                <div class="h-3 w-3 rounded-full me-2 <?= $colorEstado ?>"></div> <?= $item->estado ?>
-                            </div>
+                            <form method="POST" action="<?= $_SERVER['PHP_SELF'] ?>">
+                                <input type='hidden' name='idPost' value='<?= $item->id ?>' />
+                                <button type='submit' class="flex items-center p-2 bg-gray-200 hover:bg-gray-500 hover:text-gray-100 font-bold rounded-lg">
+                                    <span class="h-3 w-3 rounded-full me-2 <?= $colorEstado ?>"></span> <?= $item->estado ?>
+                                </button>
+                            </form>
+                        </td>
 
                         </td>
                         <td class="px-6 py-4">
@@ -105,7 +119,19 @@ $misPosts = Post::getPostsByEmail($email);
         </table>
     </div>
 
+    <?php if (isset($_SESSION['mensaje'])): ?>
+        <script>
+            Swal.fire({
+                icon: "success",
+                title: "<?= $_SESSION['mensaje'] ?>",
+                showConfirmButton: false,
+                timer: 1500
+            });
+        </script>
 
+    <?php
+        unset($_SESSION['mensaje']);
+    endif; ?>
 </body>
 
 </html>
